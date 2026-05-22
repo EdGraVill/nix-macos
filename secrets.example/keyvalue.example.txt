@@ -1,0 +1,4 @@
+# Optional local-only key/value secret store.
+# Keep the real file at secrets/keyvalue.txt.
+# Format:
+# NAME=value

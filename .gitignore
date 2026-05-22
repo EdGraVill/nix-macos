@@ -1,0 +1,28 @@
+# Local secrets. Keep this folder offline and never commit it.
+/secrets/
+
+# Nix build outputs
+/result
+/result-*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Local editor state
+/.vscode/
+/.idea/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Sensitive material, even outside /secrets/
+*.pem
+*.key
+*.gpg
+*.asc
+id_rsa
+id_ed25519
