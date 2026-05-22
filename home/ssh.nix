@@ -25,6 +25,12 @@
         identityFile = "~/.ssh/hf";
         identitiesOnly = true;
       };
+
+      "hra" = {
+        hostname = "github.com";
+        identityFile = "~/.ssh/hra";
+        identitiesOnly = true;
+      };
     };
   };
 }
