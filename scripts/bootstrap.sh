@@ -3,6 +3,29 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+request_sudo() {
+  if [ "$(id -u)" -ne 0 ]; then
+    echo "Requesting administrator privileges for the bootstrap..."
+    sudo -v
+
+    # Keep sudo alive until this script exits.
+    while true; do
+      sudo -n true
+      sleep 60
+      kill -0 "$$" 2>/dev/null || exit
+    done 2>/dev/null &
+    SUDO_KEEPALIVE_PID="$!"
+
+    cleanup_sudo_keepalive() {
+      kill "$SUDO_KEEPALIVE_PID" 2>/dev/null || true
+    }
+
+    trap cleanup_sudo_keepalive EXIT
+  fi
+}
+
+request_sudo
+
 load_nix_profile() {
   if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
     . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
