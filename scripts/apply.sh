@@ -18,10 +18,21 @@ load_nix_profile() {
 load_nix_profile
 
 if command -v darwin-rebuild >/dev/null 2>&1; then
-  darwin-rebuild switch --flake .#macbook
+  if [ "$(id -u)" -eq 0 ]; then
+    darwin-rebuild switch --flake .#macbook
+  else
+    sudo darwin-rebuild switch --flake .#macbook
+  fi
 else
-  nix \
-    --extra-experimental-features "nix-command flakes" \
-    run github:nix-darwin/nix-darwin/master#darwin-rebuild -- \
-    switch --flake .#macbook
+  if [ "$(id -u)" -eq 0 ]; then
+    nix \
+      --extra-experimental-features "nix-command flakes" \
+      run github:nix-darwin/nix-darwin/master#darwin-rebuild -- \
+      switch --flake .#macbook
+  else
+    sudo nix \
+      --extra-experimental-features "nix-command flakes" \
+      run github:nix-darwin/nix-darwin/master#darwin-rebuild -- \
+      switch --flake .#macbook
+  fi
 fi
