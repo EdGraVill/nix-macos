@@ -440,6 +440,27 @@ backup_iterm2() {
   fi
 }
 
+backup_widgets() {
+  log "Backing up macOS widgets / Notification Center configuration"
+
+  local dest="$SECRETS_DIR/app-configs/widgets"
+  mkdir -p "$dest"
+
+  copy_if_exists() {
+    local src="$1"
+    local name="$2"
+
+    if [ -e "$src" ]; then
+      rsync -a "$src" "$dest/$name" 2>/dev/null || true
+    fi
+  }
+
+  copy_if_exists "$HOME/Library/Group Containers/group.com.apple.widgets" "group.com.apple.widgets"
+  copy_if_exists "$HOME/Library/Preferences/com.apple.notificationcenterui.plist" "com.apple.notificationcenterui.plist"
+  copy_if_exists "$HOME/Library/Preferences/com.apple.widgets.plist" "com.apple.widgets.plist"
+  copy_if_exists "$HOME/Library/Application Support/NotificationCenter" "NotificationCenter"
+}
+
 final_summary() {
   printf '\nBackup summary\n'
   printf '==============\n\n'
@@ -487,6 +508,7 @@ main() {
   backup_personal_scripts
   backup_misc_metadata
   backup_iterm2
+  backup_widgets
   final_summary
 }
 
