@@ -4,8 +4,6 @@
   system.defaults = {
     NSGlobalDomain = {
       AppleInterfaceStyle = "Dark";
-      AppleAccentColor = -1;
-      AppleHighlightColor = "0.847059 0.847059 0.862745 Graphite";
 
       AppleShowAllExtensions = true;
       AppleEnableSwipeNavigateWithScrolls = false;
@@ -13,14 +11,22 @@
       NSAutomaticCapitalizationEnabled = true;
       NSAutomaticPeriodSubstitutionEnabled = true;
 
-      "com.apple.sound.beep.feedback" = 0;
-      "com.apple.sound.beep.flash" = 0;
-      "com.apple.sound.beep.sound" = "/System/Library/Sounds/Morse.aiff";
-
-      "com.apple.springing.delay" = "0.5";
-      "com.apple.springing.enabled" = true;
       "com.apple.swipescrolldirection" = true;
       "com.apple.trackpad.forceClick" = false;
+    };
+
+    CustomUserPreferences = {
+      NSGlobalDomain = {
+        AppleAccentColor = -1;
+        AppleHighlightColor = "0.847059 0.847059 0.862745 Graphite";
+
+        "com.apple.sound.beep.feedback" = 0;
+        "com.apple.sound.beep.flash" = 0;
+        "com.apple.sound.beep.sound" = "/System/Library/Sounds/Morse.aiff";
+
+        "com.apple.springing.delay" = "0.5";
+        "com.apple.springing.enabled" = true;
+      };
     };
 
     screencapture = {
