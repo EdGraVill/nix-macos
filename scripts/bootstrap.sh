@@ -45,7 +45,8 @@ prepare_etc_for_nix_darwin() {
 
 if ! command -v nix >/dev/null 2>&1; then
   echo "Installing Nix..."
-  sh <(curl -L https://nixos.org/nix/install)
+  curl -L https://nixos.org/nix/install -o /tmp/nix-install.sh
+  sh /tmp/nix-install.sh --daemon --yes
 
   echo "Loading Nix profile into current shell..."
   load_nix_profile
