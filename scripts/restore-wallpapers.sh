@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 SRC="./secrets/app-configs/wallpapers"
-DEST="$HOME/Pictures/Wallpapers"
+DEST="$HOME/bg"
 
 if [ ! -d "$SRC" ]; then
   echo "No wallpapers backup found at $SRC"
@@ -22,7 +22,7 @@ fi
 osascript <<EOF || true
 tell application "System Events"
   tell every desktop
-    set picture to POSIX file "$DEST"
+    set picture to POSIX file "$DEST/Halo Foundry"
   end tell
 end tell
 EOF
