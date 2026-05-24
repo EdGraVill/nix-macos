@@ -417,6 +417,29 @@ backup_misc_metadata() {
   fi
 }
 
+backup_iterm2() {
+  log "Backing up iTerm2 configuration"
+
+  local src="$HOME/Library/Preferences/com.googlecode.iterm2.plist"
+  local dest_dir="$SECRETS_DIR/app-configs/iterm2"
+
+  mkdir -p "$dest_dir"
+
+  if [ -f "$src" ]; then
+    cp -p "$src" "$dest_dir/com.googlecode.iterm2.plist"
+  else
+    warn "iTerm2 preferences not found at $src"
+  fi
+
+  # Optional: backup color preset files if you keep them somewhere predictable.
+  if [ -d "$HOME/Library/Application Support/iTerm2" ]; then
+    rsync -a \
+      "$HOME/Library/Application Support/iTerm2/" \
+      "$dest_dir/Application Support iTerm2/" \
+      2>/dev/null || true
+  fi
+}
+
 final_summary() {
   printf '\nBackup summary\n'
   printf '==============\n\n'
@@ -463,6 +486,7 @@ main() {
   backup_ssh
   backup_personal_scripts
   backup_misc_metadata
+  backup_iterm2
   final_summary
 }
 
