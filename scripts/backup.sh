@@ -16,6 +16,7 @@ REPO_STRUCTURE_DIR="$REPOS_DIR/structure"
 SSH_BACKUP_DIR="$SECRETS_DIR/ssh"
 GPG_BACKUP_DIR="$SECRETS_DIR/gpg"
 HOME_FILES_DIR="$SECRETS_DIR/home-files"
+WALLPAPER_SOURCE_DIR="$HOME/bg"
 
 mkdir -p "$REPORTS_DIR" "$REPOS_DIR" "$REPO_STRUCTURE_DIR" "$SSH_BACKUP_DIR" "$GPG_BACKUP_DIR" "$HOME_FILES_DIR"
 
@@ -461,6 +462,32 @@ backup_widgets() {
   copy_if_exists "$HOME/Library/Application Support/NotificationCenter" "NotificationCenter"
 }
 
+backup_wallpapers() {
+  log "Backing up wallpapers"
+
+  local source_dir="${WALLPAPER_SOURCE_DIR:-$HOME/Pictures/Wallpapers}"
+  local dest="$SECRETS_DIR/app-configs/wallpapers"
+
+  mkdir -p "$dest"
+
+  if [ -d "$source_dir" ]; then
+    rsync -a "$source_dir/" "$dest/images/"
+    printf '%s\n' "$source_dir" > "$dest/source-path.txt"
+  else
+    warn "Wallpaper source folder not found: $source_dir"
+    warn "Set WALLPAPER_SOURCE_DIR=/path/to/wallpapers when running backup.sh if needed."
+  fi
+
+  # Best-effort backup of macOS wallpaper preferences.
+  mkdir -p "$dest/preferences"
+
+  [ -f "$HOME/Library/Application Support/com.apple.wallpaper/Store/Index.plist" ] &&
+    cp -p "$HOME/Library/Application Support/com.apple.wallpaper/Store/Index.plist" "$dest/preferences/Index.plist" || true
+
+  [ -f "$HOME/Library/Preferences/com.apple.desktop.plist" ] &&
+    cp -p "$HOME/Library/Preferences/com.apple.desktop.plist" "$dest/preferences/com.apple.desktop.plist" || true
+}
+
 final_summary() {
   printf '\nBackup summary\n'
   printf '==============\n\n'
@@ -509,6 +536,7 @@ main() {
   backup_misc_metadata
   backup_iterm2
   backup_widgets
+  backup_wallpapers
   final_summary
 }
 

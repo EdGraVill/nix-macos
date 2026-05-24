@@ -74,6 +74,7 @@ if [ -d "./secrets" ]; then
   ./scripts/restore-home-files.sh || true
   ./scripts/restore-iterm2.sh || true
   ./scripts/restore-widgets.sh || true
+  ./scripts/restore-wallpapers.sh || true
   ./scripts/restore-repos.sh || true
 else
   echo "No ./secrets folder found. Skipping secrets restore."
