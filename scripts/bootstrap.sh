@@ -3,10 +3,36 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+load_nix_profile() {
+  if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
+    # Multi-user Nix installer
+    # shellcheck disable=SC1091
+    . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
+  elif [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
+    # Single-user Nix installer
+    # shellcheck disable=SC1090
+    . "$HOME/.nix-profile/etc/profile.d/nix.sh"
+  fi
+}
+
 if ! command -v nix >/dev/null 2>&1; then
   echo "Installing Nix..."
   sh <(curl -L https://nixos.org/nix/install)
-  echo "Nix installed. Open a new terminal if this shell cannot find nix yet."
+
+  echo "Loading Nix profile into current shell..."
+  load_nix_profile
+else
+  load_nix_profile
+fi
+
+if ! command -v nix >/dev/null 2>&1; then
+  echo
+  echo "Nix was installed, but it is still not available in this shell."
+  echo "Close this terminal, open a new one, and run:"
+  echo
+  echo "  ./scripts/bootstrap.sh"
+  echo
+  exit 1
 fi
 
 ./scripts/apply.sh
