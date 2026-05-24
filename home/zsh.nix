@@ -20,7 +20,7 @@
       ];
     };
 
-    initExtra = ''
+    initContent = ''
       # Personal scripts restored from secrets/home-files by scripts/restore-home-files.sh
       [ -f "$HOME/.gitutils" ] && source "$HOME/.gitutils"
       [ -f "$HOME/utils/video.sh" ] && source "$HOME/utils/video.sh"

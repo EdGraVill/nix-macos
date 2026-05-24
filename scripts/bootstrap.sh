@@ -5,14 +5,19 @@ cd "$(dirname "$0")/.."
 
 load_nix_profile() {
   if [ -e "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh" ]; then
-    # Multi-user Nix installer
-    # shellcheck disable=SC1091
     . "/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh"
   elif [ -e "$HOME/.nix-profile/etc/profile.d/nix.sh" ]; then
-    # Single-user Nix installer
-    # shellcheck disable=SC1090
     . "$HOME/.nix-profile/etc/profile.d/nix.sh"
   fi
+}
+
+prepare_etc_for_nix_darwin() {
+  for file in /etc/bashrc /etc/zshrc; do
+    if [ -e "$file" ] && [ ! -e "$file.before-nix-darwin" ]; then
+      echo "Moving $file to $file.before-nix-darwin so nix-darwin can manage it..."
+      sudo mv "$file" "$file.before-nix-darwin"
+    fi
+  done
 }
 
 if ! command -v nix >/dev/null 2>&1; then
@@ -34,6 +39,8 @@ if ! command -v nix >/dev/null 2>&1; then
   echo
   exit 1
 fi
+
+prepare_etc_for_nix_darwin
 
 ./scripts/apply.sh
 

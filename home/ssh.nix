@@ -3,33 +3,41 @@
 {
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
 
     includes = [
       "~/.orbstack/ssh/config"
     ];
 
-    matchBlocks = {
+    settings = {
+      "*" = {
+        ForwardAgent = false;
+        AddKeysToAgent = "no";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
+      };
+
       "orb" = {
-        hostname = "orb";
-        user = "edgravill@ubuntu";
+        HostName = "orb";
+        User = "edgravill@ubuntu";
       };
 
       "github.com" = {
-        hostname = "github.com";
-        identityFile = "~/.ssh/ghp";
-        identitiesOnly = true;
+        HostName = "github.com";
+        IdentityFile = "~/.ssh/ghp";
+        IdentitiesOnly = true;
       };
 
       "hf.co" = {
-        hostname = "hf.co";
-        identityFile = "~/.ssh/hf";
-        identitiesOnly = true;
-      };
-
-      "hra" = {
-        hostname = "github.com";
-        identityFile = "~/.ssh/hra";
-        identitiesOnly = true;
+        HostName = "hf.co";
+        IdentityFile = "~/.ssh/hf";
+        IdentitiesOnly = true;
       };
     };
   };
