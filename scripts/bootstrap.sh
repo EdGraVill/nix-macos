@@ -43,6 +43,7 @@ fi
 prepare_etc_for_nix_darwin
 
 ./scripts/apply.sh
+./scripts/setup-dock.sh || true
 
 if [ -d "./secrets" ]; then
   ./scripts/restore-ssh.sh || true
@@ -55,6 +56,7 @@ else
 fi
 
 ./scripts/apply.sh
+./scripts/setup-dock.sh || true
 
 mkdir -p "$HOME/Desktop"
 cp ./todo.md "$HOME/Desktop/nix-restore-todo.md"
