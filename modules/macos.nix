@@ -20,6 +20,8 @@
         AppleAccentColor = -1;
         AppleHighlightColor = "0.847059 0.847059 0.862745 Graphite";
 
+        AppleIconAppearanceTheme = "TintedDark";
+
         "com.apple.sound.beep.feedback" = 0;
         "com.apple.sound.beep.flash" = 0;
         "com.apple.sound.beep.sound" = "/System/Library/Sounds/Morse.aiff";
@@ -50,6 +52,9 @@
   system.activationScripts.macosPreferences.text = ''
     mkdir -p "/Users/${username}/Desktop/Screenshots"
     chown ${username}:staff "/Users/${username}/Desktop/Screenshots" || true
+
+    # Icon/widget appearance: Tinted + Dark.
+    /usr/bin/defaults write NSGlobalDomain AppleIconAppearanceTheme -string "TintedDark"
 
     # Disable all hot corners.
     /usr/bin/defaults write com.apple.dock wvous-tl-corner -int 1
