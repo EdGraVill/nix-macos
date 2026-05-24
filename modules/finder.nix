@@ -15,7 +15,7 @@
     ShowPathbar = true;
     ShowStatusBar = true;
 
-    NewWindowTarget = "Home";
+    NewWindowTarget = "Other";
     NewWindowTargetPath = "file:///Users/${username}/";
   };
 
