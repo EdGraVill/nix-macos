@@ -9,6 +9,7 @@
     ../modules/finder.nix
     ../modules/energy.nix
     ../modules/services.nix
+    ../modules/fonts.nix
   ];
 
   system.primaryUser = username;
